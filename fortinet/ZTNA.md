@@ -103,3 +103,20 @@ AND máy phải đạt security posture của công ty
 → Máy không comply thì dù user có trong group A cũng không được vào KeyVault.
 
 Đây là Zero Trust chính hiệu.
+
+
+
+Posture Tag chỉ được tạo và quản lý trên FortiClient EMS.
+FortiGate chỉ nhận posture tag từ EMS và sử dụng trong ZTNA policy.
+FortiManager cũng chỉ sync & sử dụng, không tạo được.
+FortiClient EMS là nơi thực hiện endpoint posture check
+→ kiểm tra Windows Defender, OS version, domain join, USB status, malware, v.v.
+
+Khi kết quả posture check đúng tiêu chuẩn
+→ EMS gán Posture Tag cho thiết bị.
+
+Thiết bị gửi Posture Tag đó lên FortiGate qua Fabric Connector
+→ FortiGate dùng tag này để match vào ZTNA rule.
+
+
+
