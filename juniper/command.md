@@ -1,12 +1,35 @@
-🔹 1. Vào chế độ cấu hình
+# 1. Vào chế độ cấu hình
 ```
-cli
-configure
++ Chế độ Shell mode (Dấu %): Môi trường Unix/FreeBSD, dùng cli để vào mode cấu hình
+
++ Operation mode (Dấu >) Dùng để kiểm tra trạng thái giám sát ping trace : Lệnh vào cli
+Ví dụ: root@switch> show interfaces terse
+
++ Configuration Mode (dấu #): Dùng để thay đổi cấu hình thiết bị.
+Lệnh vào: configure hoặc edit
+Ví dụ: root@switch# set system host-name Juniper-SW
 ```
-🔹 2. Kiểm tra cấu hình
+# 2. Kiểm tra cấu hình
 ```
-show configuration
-show configuration | display set       # Hiển thị dạng lệnh set
+show configuration (Trong cli mode)
+
+```
+Lúc này ta sẽ có một số cấu hình interface có dạng như sau : 
+```
+interfaces {
+    ge-0/0/0 {
+        description "Ket noi den Core Switch";
+        speed 1g;
+        unit 0 {
+            family ethernet-switching {
+                interface-mode access;
+                vlan {
+                    members vlan-10;
+                }
+            }
+        }
+    }
+}
 ```
 
 🔹 3. Lưu cấu hình
@@ -16,8 +39,17 @@ commit and-quit
 ```
 
 🔹 4. Cấu hình VLAN
++ Show vlan
 ```
-Tạo VLAN:
+cli
+configure
+show vlan
+```
+
++ Tạo VLAN:
+```
+cli 
+configure
 set vlans VLAN10 vlan-id 10
 
 Gán interface vào VLAN (access):
