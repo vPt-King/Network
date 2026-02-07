@@ -1,0 +1,45 @@
+# Kiểm tra thông tin hệ thống
+`get system status`
+
+# Xem cấu hình hiện tại
+`show full-configuration`
+
+# Đặt ip cho 1 port
+```
+config system interface
+    edit port2
+        set ip 192.168.100.10/24
+        set allowaccess ping http https ssh
+    next
+end
+
+config router static
+    edit 1
+        set gateway 192.168.100.1
+        set device port2
+    next
+end
+get system interface physical
+```
+
+# Xóa trắng cấu hình 1 port
+```
+config system interface
+	delete port3
+end
+```
+# Cấu hình lacp
+config system interface
+    edit agg1
+        set vdom root
+        set type aggregate
+        set member port1 port3
+        set lacp-mode active
+    next
+end
+
+# Sửa lỗi hết cert trong eve
+config system ntp
+set ntpsync disable
+end
+execute reboot
