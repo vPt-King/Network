@@ -168,3 +168,24 @@ end
 
 get system interface <tunnel-interface-name>
 
+
+16h đúng 6/2, FGT-1000F bổng mất kết nối IBGP chạy trên nền S2S IPsec với Palo và Checkpoint ở DC, mọi giao tiếp với 2 vùng DMZ server mất liền lạc.
+Kiểm tra bước bắt tay số 2 Connect IBGP vẫn thông TCP/179 vẫn chạy qua được nhưng bước số 3 Active lại failed (mismatch, gói tin cứ lên là bị đầu palo và checkpoint droped, phiên ko chuyển bước bắt tay được.
+Thực hiện các thao tác dig debug lên quan đến bgp ở fgt ko có gì bất thường, ngồi debug 30p éo ra được, trong khi user đúc vào đít do toàn bộ system đang rớt, con FGT phụ trách cho HQ đến 2 zone server,  1 nhánh vậy chạy 2 tunnel, tổng 4 tunnel vậy mà rớt sạch. Cuối cùng nghĩ đến debug mss và mtu trên interface tunnel. 
+FGT
+execute ping-options size 1472
+execute ping-options df-bit enable
+execute ping <peer-ip>
+- Kết quả failed - thấy là ko ổn rồi
+Palo 
+Ping host <peer-ip> size 1472 df-bit yes
+- ok
+Checkpoint 
+ping -M do -s 1472 <peer-ip>
+ok
+Nghĩa là đầu palo và checkpoint gói mtu và msss ổn
+Quyết định chỉnh mtu ở tunnel và giảm mss ở các rule s2s trên FGT
+Mtu tunnel chỉnh về 1400
+TCP mss chỉnh về 1350
+Kết quả bước 3 active trong IBGP bắt tay lại ngay, chuyển trạng thái qua bước open sent -> open confirm -> established ngon lành trở lại ngay...debug mất 45p downtime toàn hệ thống
+
