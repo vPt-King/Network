@@ -14,7 +14,7 @@
 
 Link download : https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
 
-!\[System Architecture](./1.png)
+!\[System Architecture](./1.jpg)
 
 &nbsp;
 
